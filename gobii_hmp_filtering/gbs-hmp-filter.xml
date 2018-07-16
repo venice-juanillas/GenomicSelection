@@ -1,0 +1,43 @@
+<tool id="gbs-hmp-filter" name="Hapmap data filter">
+  <description>Filter per SNPs based on user-specified criteria</description>
+  <command>
+  <![CDATA[
+	$__tool_directory__/hmp_magic_snp_filter-noID.pl '$infile' '$out' '$missingTaxa' '$maf' '$hets' 
+  ]]>
+  </command>
+
+  <inputs>
+    <param format="tabular" name="infile" type="data" label="Hapmap data file">
+    </param>
+
+    <param name="missingTaxa" size="10" type="text" value="0.25">
+       <label>Max proportion of samples with missing SNP call</label>
+    </param>
+
+    <param name="maf" size="10" type="text" value="0.125">
+       <label>Minimum allele freq allowed (MAF)</label>
+    </param>
+    
+    <param name="hets" size="10" type="text" value="0.8">
+       <label>Maximum allowed heterozygosity</label>
+    </param>
+
+  </inputs>
+
+  <outputs>
+    <data format="tabular" name="out"/>
+  </outputs>
+
+  <tests>
+    <test>
+      <param name="infile" value="hapmap"/>
+      <output name="out" file="subset"/>
+    </test>
+  </tests>
+
+  <help>
+This tool allows user-specified filtering for SNPs in a big hapmap file according to proportion of samples with missing calls and MAF)
+  </help>
+
+</tool>
+
