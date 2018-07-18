@@ -29,7 +29,21 @@ This tool does simple imputation on missing genotype data using mean(mean substi
 
 -----
 
+**Input File:**
 
-   
+This tool expects that the genotype data file has been encoded or transformed from allele to numeric. See Encode tool.
+
+**Output File:**
+
+This tool outputs a hapmap file.
+
+When using mean method, the missing values/alleles in the hapmap are imputed with the mean of the observed values. On the other hand, if mode  method is used, the numeric missing values are imputed with the median value.
+
+-----
+
+References: 
+
++ https://www.r-bloggers.com/example-2014-5-simple-mean-imputation
++ https://cran.r-project.org/web/packages/imputeMissings/imputeMissings.pdf   
     ]]></help>
 </tool>

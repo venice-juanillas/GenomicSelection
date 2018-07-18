@@ -1,0 +1,23 @@
+<tool id="sample_matching" name="Genotype-Phenotype Matching" version="0.1.0">
+    <description>phenotype and genotype files</description>
+    <requirements>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+    	perl $__tool_directory__/validate_v3.pl $genotype $phenotype $gidCol $keyVariables $phenoRowStart $output $outputHapmap
+    ]]>
+    </command>
+    <inputs>
+	<param name="genotype" type="data" format="tabular" label="Encoded Genotype Data" help="(required) File must be tab-delimited"/>
+	<param name="phenotype" type="data" format="tabular" label="Phenotype Data" help="(required) File must be tab-delimited"/>
+	<param name="gidCol" type="integer" size="4" value="5" label="Column number for GID in phenotype file" help="(integer) Select column number which contains the GID"/>
+	<param name="keyVariables" type="text" size="10" value="3,4" label="Column to select as Grouping Factor" help="For single grouping factor, input single number (example: if grouping factor is in the 3rd column of the phenotype file, input). For multiple grouping factors, input comma-separated values (example: 1,4,10 for columns 1,4 and 10)"/>
+	<param name="phenoRowStart" type="integer" size="4" value="2" label="Row start number for observations in Phenotype File" help="(integer) Select row number where observations start."/>
+    </inputs>
+    <outputs>
+	<data name="output" format="tabular" label="Output" />
+	<data name="outputHapmap" format="tabular" label="Output: Genotype Matrix" />
+    </outputs>
+    <help><![CDATA[
+        
+    ]]></help>
+</tool>
