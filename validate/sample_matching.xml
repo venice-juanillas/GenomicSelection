@@ -18,6 +18,9 @@
 	<data name="outputHapmap" format="tabular" label="Output: Genotype Matrix" />
     </outputs>
     <help><![CDATA[
-        
+.. class:: infomark
+
+Genotype-Phenotype Matching       
+ 
     ]]></help>
 </tool>
