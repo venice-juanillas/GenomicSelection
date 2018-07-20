@@ -39,7 +39,7 @@ M <- geno[,-1:-11]
 ## impute with population mean or mode 
 if(opt$i=="mean"){
   
-  M <- apply(M, 1, function(x){ y = mean(x, na.rm = TRUE); x[which(is.na(x))] <- y; x })
+  M <- apply(M, 1, function(x){ y = round(mean(x, na.rm = TRUE),1); x[which(is.na(x))] <- y; x })
   print("missing values are imputed with population mean\n")
 }
 

@@ -1,4 +1,4 @@
-<tool id="simple_impute" name="Simple imputation" version="0.1.0">
+<tool id="naive_impute" name="Naive imputation" version="0.1.0">
     <description>
 	 using population mean or mode
     </description>

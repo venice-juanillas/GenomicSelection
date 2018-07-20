@@ -2,7 +2,7 @@
     <description>phenotype and genotype files</description>
     <requirements>
     </requirements>
-    <command detect_errors="exit_code"><![CDATA[
+    <command><![CDATA[
     	perl $__tool_directory__/validate_v3.pl $genotype $phenotype $gidCol $keyVariables $phenoRowStart $output $outputHapmap
     ]]>
     </command>
@@ -17,6 +17,17 @@
 	<data name="output" format="tabular" label="Output" />
 	<data name="outputHapmap" format="tabular" label="Output: Genotype Matrix" />
     </outputs>
+    <tests>
+	<test>
+		<param name="genotype" value="2018.05.21-genotype.Umesh.hmp" />
+		<param name="phenotype" value="2018.05.2018.05.17-phenotype.Umesh.csv" />
+		<param name="gidCol" value="5" />
+		<param name="keyVariables" value="3,4" />
+		<param name="phenoRowStart" value="2" />
+		<output name="output" file="validateOut" />
+		<output name="outputHapmap" file="validateHmp" />
+	</test>
+    </tests>
     <help><![CDATA[
 .. class:: infomark
 
