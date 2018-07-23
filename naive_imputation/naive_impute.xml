@@ -13,7 +13,7 @@
 		<option value="mean" selected="true"> Mean </option>
 		<option value="mode"> Mode </option>
 	</param>
-	<param name="skipNum" type="integer" size="4" value="1" label="Lines of metadata (starts with # )" help="(required)The GOBII hapmap format includes some metadata information regarding the data in the genotype file. These usally starts with '#'. The tool needs to skip these lines." />
+	<param name="skipNum" type="integer" size="4" value="36" label="Lines of metadata (starts with # )" help="(required)The GOBII hapmap format includes some metadata information regarding the data in the genotype file. These usally starts with '#'. The tool needs to skip these lines." />
     </inputs>
     <outputs>
 	<data name="outFile" format="tabular" label="Imputed Data"/>
