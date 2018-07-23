@@ -5,7 +5,7 @@
     <requirements>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
-	Rscript --vanilla $__tool_directory__/simple_impute.R -f '$inputFile' -o '$outFile' -i '$method' -n '$skipNum'
+	Rscript --vanilla $__tool_directory__/naive_impute.R -f '$inputFile' -o '$outFile' -i '$method' -n '$skipNum'
     ]]></command>
     <inputs>
 	<param name="inputFile" type="data" format="tabular" label="Encoded Genotype data" help="(required)File must be tab-delimited. This tool expects that the allele data have been encoded/transformed to numeric. See Encode tool." />
