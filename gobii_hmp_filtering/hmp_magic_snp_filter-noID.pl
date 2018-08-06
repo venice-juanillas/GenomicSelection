@@ -20,6 +20,7 @@ my @afs = () ; ## store NT freqs for each SNP, empty array...
 my ($fA, $fT, $fC, $fG, $minAF); #allele freqs of each NT, minimum allele frequency not zero, 
 my (@line,@taxa, @filteredLines);
 my $het_cutoff = 0.8;	
+my $hetPerc = 0;
 
 if(!@ARGV){
 	die " $! \nUsage: ./script <hapmap_file> <outputFile> <allowed-proportion-taxa-with-missing-SNPs> <MAF_cutoff> <incl_monomorphic> <hets_cutoff>\n";
@@ -97,7 +98,7 @@ while (<IN>) {
 	} ## end for i
 	##print "$numTaxa\t$ctMissing\n";
 	
-	print "Het: $het\n";
+	#print "Het: $het\n";
 	
 	## CONDITIONAL printing of taxa lines ....
 	$missingCutoff = sprintf("%0d", ($validSampCut * $numTaxa)); ## round off , this is the max # allowed to be missing...
@@ -114,6 +115,9 @@ while (<IN>) {
 	$fG = $ctG/$monoCt;
 	#print "$fA\t$fT\t$fC\t$fG\n";
 	
+	# compute heterozygozity
+	$hetPerc=$het/(scalar(@line)-11);
+	
 	push (@afs,  $fA) if $fA >0;
 	push (@afs,  $fT) if $fT >0;
 	push (@afs,  $fC) if $fC >0;
@@ -122,7 +126,7 @@ while (<IN>) {
 	#print "$minAF\n";
 
 	
-	if ($ctMissing <= $missingCutoff ) {  ## Count of missing is less than maximum allowed...
+	if ($ctMissing <= $missingCutoff && $hetPerc >= $het_cutoff ) {  ## Count of missing is less than maximum allowed...
 		if ($minAF >= $maf && $minAF < $maxAF ) {  ## least frequent allele is > than MAF but not mono --> minAF = 0 
 			print OUT $line;
 		}
@@ -136,6 +140,7 @@ while (<IN>) {
 	$ctT = 0;
 	$ctC = 0;
 	$ctG = 0;
+	$hetPerc = 0;
 	@afs = ();
 
 	

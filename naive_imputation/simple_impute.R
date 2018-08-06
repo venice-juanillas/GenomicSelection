@@ -21,16 +21,20 @@ if (is.null(opt$file)){
   stop("At least one argument must be supplied (input file).\n", call.=FALSE)
 }
 
-if(is.null(opt$n)){
-	datf <-readlines(con<-file(opt$f))
-	opt$n <- grep("^[^#]", datf)[1]-1
+## if the number of rows specifying the comments/metadata section was not supplied
+## take a peek on the file and read how many lines begin with "#" 
+## set the opt$n 
+if (is.null(opt$n)){
+  datf <- readLines(con <- file (opt$f))
+  opt$n <- grep ("^[^#]", datf)[1]-1
 }
 
 ## read the hapmap file
-geno<-read.delim(opt$f,sep="\t",quote="\"",na.strings="NA", skip=opt$n)
+geno<-read.delim(opt$f,header=TRUE,sep="\t",quote="\"",na.strings="NA", skip=opt$n)
 
 ## store the metadata headers in a different variable
 #metadata <- read.delim(opt$f, nrows=opt$n)
+
 ## or use this:
 metadata <- head(readLines(con <- file (opt$f)),opt$n+1)
 
@@ -45,9 +49,8 @@ M <- geno[,-1:-11]
 
 ## impute with population mean or mode 
 if(opt$i=="mean"){
-  
   M <- apply(M, 1, function(x){ y = round(mean(x, na.rm = TRUE),1); x[which(is.na(x))] <- y; x })
-  print("missing values are imputed with population mean\n")
+  print("missing values are imputed with population mean")
 }
 
 if(opt$i =="mode"){
@@ -56,12 +59,13 @@ if(opt$i =="mode"){
     return(md)
   }
   M <- apply(M, 1, function(x){ y = modeX(x); x[which(is.na(x))] <- y; x })
-  print("missing values are imputed with population mode\n")
+  print("missing values are imputed with population mode")
 }
 
 ## reconstruct data frame after imputation.
 ## transpose since prior imputation step have changed the orientation of the matrix
 geno <- data.frame (geno[,1:11], t(M), check.names = FALSE)
+
 geno1 <- geno[,-ncol(geno)]
 
 ## write the output into the out_file. 

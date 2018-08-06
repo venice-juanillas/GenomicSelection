@@ -2,7 +2,7 @@
   <description>Filter per SNPs based on user-specified criteria</description>
   <command>
   <![CDATA[
-	$__tool_directory__/hmp_magic_snp_filter-noID.pl '$infile' '$out' '$missingTaxa' '$maf' '$hets' 
+	perl $__tool_directory__/hmp_magic_snp_filter-noID.pl '$infile' '$out' '$missingTaxa' '$maf' '$hets' 
   ]]>
   </command>
 
