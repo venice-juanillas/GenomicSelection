@@ -13,7 +13,7 @@
 
 use strict;
 use warnings;
-
+use bytes;
 
 ## Usage:bglr_encode.pl <format_type> <genotype_file> <coding_scheme> <output>
 
@@ -74,10 +74,10 @@ sub encode2letter{
 				#print OUT "\t";
 				$row[$i] =~ s/\s$//g;
 				if($row[$i] eq join("",$allele1,$allele1)){ ## homo major
-					$row[$i] = $homoMaj;
+					$row[$i] = $homoMin;
 					#print OUT "\t".$homoMaj;
 				}elsif($row[$i] eq join("",$allele2,$allele2)){ ## homo minor
-					$row[$i] = $homoMin;
+					$row[$i] = $homoMaj;
 					#print OUT "\t".$homoMin;
 				}elsif(($row[$i] eq join("",$allele1,$allele2)) or ($row[$i] eq join("",$allele2,$allele1))){ ## het
 					$row[$i] = $het;
@@ -142,6 +142,8 @@ sub encodeIUPAC{
 	my ($geno,$code,$output) = @_;
 	my $linecount = 0;
 	my @row;
+	my $allele1 = "";
+	my $allele2 = "";
 	my ($w,$x,$y,$z) = split(',',$code);	
 	my $useThisCode = $z; # default is set to missing
 	## open files
@@ -155,22 +157,40 @@ sub encodeIUPAC{
 		if($linecount == 0){ #print header
 			print OUT $line."\n";
 		}else{ # parse succeeding data rows
-			@row = split(',',$line);
-			
+			@row = split(/\t/,$line); ## split expects the file is tab-delimited  
+			#print $row[1];
+			#print length($row[1]);
+			if(length($row[1]) == 3){
+				($allele1,$allele2) = split(/\//,$row[1]);
+			}elsif(length($row[1]) == 1){
+				$allele1 = $row[1];
+				$allele2 = $row[1];
+			}
+			#print length($row[1]);
 			## skip first 11 columns
-			#for(my $i = 11; $i < $#row; $i++) {
-				## randomize what to use for minor or major homo
-				if(int(rand(2)) == 0){
-					$useThisCode = $w
-				}else{$useThisCode=$y;}
-				for (@row){s/A|C|T|G/$useThisCode/g} # encode every DNA base in the line
-				for (@row){s/R|K|M|S|W|Y/$x/g} # encode all hets 
-				for (@row){s/N|^-$|^\.$/$z/g} # encode missing values
+			for(my $i = 11; $i <= $#row; $i++) {
+				$row[$i] =~s/\s$//g;
+				if($row[$i] eq $allele1){
+					$row[$i] = $y;
+				}elsif($row[$i] eq $allele2){
+					$row[$i] = $w;
+				}elsif($row[$i] eq "R" | $row[$i] eq "K" | $row[$i]eq "M" | $row[$i] eq "S" | $row[$i] eq "W" | $row[$i] eq "Y"){
+					$row[$i] = $x;
+				}elsif($row[$i] eq "N" | $row[$i] eq "-"){
+					$row[$i] = $z;
+				} # encode every DNA base in the lino
+				#{s/R|K|M|S|W|Y/$x/g} # encode all hets 
+				#for (@row){s/N|^-$|^\.$/$z/g} # encode missing values
 
-				my $encoded = join(',',@row); # join everything
-				print OUT $encoded."\n"; # output as encoded
-			#}
-		}
+				#print OUT $encoded."\n"; # output as encoded
+			}
+		
+			## output encoded genotypes
+			for(my $j = 0; $j <= $#row; $j++){
+				print OUT $row[$j]."\t";
+			}
+			print OUT "\n";
+		}	
 		$linecount++;
 	}
 	close(IN);
